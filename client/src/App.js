@@ -85,7 +85,7 @@ function App({
           history.push("/game");
           break;
         case "Escape":
-          history.push("/menu");
+          history.push("/");
           break;
         case "m":
           music ? setMusic(0) : setMusic(1);
@@ -109,12 +109,11 @@ function App({
 
       <Header /> <div id="page-wrap">
 
-        <Switch>
-          <Redirect exact from="/" to="/menu" />
+        <Switch>         
 
-          <Route path="/menu">
+          <Route path="/">
             <div className="navlink">
-              <NavLink to="/menu">
+              <NavLink to="/">
                 <div>Menu</div>
               </NavLink>
             </div>

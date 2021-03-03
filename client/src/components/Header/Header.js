@@ -10,7 +10,7 @@ const Header = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <Menu outerContainerId={"outer-container"} pageWrapId={"page-wrap"} >
-          <NavLink className="menu-item" to="/menu">
+          <NavLink className="menu-item" to="/">
             Menu
       </NavLink>
           <NavLink className="menu-item" to="/settings">
