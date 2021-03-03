@@ -401,6 +401,10 @@ table {
   font-size: 25px;
 }
 
+ul {
+  list-style-type: none;
+}
+
 @media only screen and (max-width: 750px) {
   .game-board {
     width: 440px;

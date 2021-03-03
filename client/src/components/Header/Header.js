@@ -11,14 +11,14 @@ const Header = () => {
       <div className={styles.header}>
         <Menu outerContainerId={"outer-container"} pageWrapId={"page-wrap"} >
           <NavLink className="menu-item" to="/menu">
-            <div>Menu</div>
-          </NavLink>
-          <NavLink className="menu-item" href="/settings">
+            Menu
+      </NavLink>
+          <NavLink className="menu-item" to="/settings">
             Settings
-          </NavLink>
-          <NavLink className="menu-item" href="/statistics">
+      </NavLink>
+          <NavLink className="menu-item" to="/statistics">
             Statistics
-          </NavLink>
+      </NavLink>
         </Menu>
         <h1>Checkers</h1>
       </div>

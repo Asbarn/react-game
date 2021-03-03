@@ -168,6 +168,18 @@ const Settings = ({
           />
         </label>
       </div>
+
+      <div className="choose">
+        Hotkeys
+        <ul>          
+        <li>1 - start singleplayer game</li>
+        <li>2 - start miltiplayer game</li>
+        <li>Tab - Go to settings page</li>
+        <li>Escape - Go to menu page</li>
+        <li>m - Mute music</li>
+        <li>n - Mute sound</li>
+        </ul>
+      </div>
     </>
   );
 };
