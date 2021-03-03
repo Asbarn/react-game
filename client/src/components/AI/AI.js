@@ -273,7 +273,7 @@ class AI {
     return computerMoves;
   }
 
-  getSmartMove(state, boardState, player) {
+  getMove(state, boardState, player) {
     const computerMoves = this.getComputerMoves(boardState, player);
 
     const moveKeys = Object.keys(computerMoves);
@@ -367,23 +367,7 @@ class AI {
     out.moveTo = chooseMove[1];
 
     return out;
-  }
-
-  getRandomMove(boardState, player) {
-    const computerMoves = this.getComputerMoves(boardState, player);
-    const keys = Object.keys(computerMoves);
-    const randomPiece = keys[Math.floor(Math.random() * keys.length)];
-
-    const movesData = computerMoves[randomPiece][0];
-    const randomMoveTo =
-      movesData[Math.floor(Math.random() * movesData.length)];
-
-    let out = {};
-    out.piece = randomPiece;
-    out.moveTo = randomMoveTo;
-
-    return out;
-  }
+  }  
 }
 
 export default AI;

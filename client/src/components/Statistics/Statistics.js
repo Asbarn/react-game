@@ -14,7 +14,7 @@ const Statistics = () => {
         return 0;
       });
     } else {
-      stats = localStorageStats.sort((a, b) => {       
+      stats = localStorageStats.sort((a, b) => {
         if (
           parseInt(a.time.minutes, 10) * 60 + a.time.seconds <
           parseInt(b.time.minutes, 10) * 60 + b.time.seconds
@@ -47,17 +47,18 @@ const Statistics = () => {
         </thead>
         <tbody>
           {stats.map((el, num) => {
-            return (
-              <tr>
-                <th>{num + 1}</th>
-                <td>{el.moves}</td>
-                <td>
-                  <span class="minute">{el.time.minutes}</span>
-                  <span>:</span>
-                  <span class="second">{el.time.seconds}</span>
-                </td>
-              </tr>
-            );
+            if (num < 10)
+              return (
+                <tr>
+                  <th>{num + 1}</th>
+                  <td>{el.moves}</td>
+                  <td>
+                    <span class="minute">{el.time.minutes}</span>
+                    <span>:</span>
+                    <span class="second">{el.time.seconds}</span>
+                  </td>
+                </tr>
+              );
           })}
         </tbody>
       </table>

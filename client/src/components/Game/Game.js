@@ -183,7 +183,7 @@ const Game = ({ players, color, audio, theme }) => {
     }
 
     return () => clearInterval(intervalId);
-  }, [isActive, time.counter]);
+  }, [isActive, time?.counter]);
 
   let currentState = state?.history[state.stepNumber];
   let boardState = state?.history[state.stepNumber].boardState;
@@ -198,9 +198,9 @@ const Game = ({ players, color, audio, theme }) => {
           ? "Black's turn. "
           : "White's turn. "}
       </span>
-      <span class="minute">{time.minute}</span>
+      <span className="minute">{time.minute}</span>
       <span>:</span>
-      <span class="second">{time.second}</span>
+      <span className="second">{time.second}</span>
     </div>
   );
   let resetClass = "undo";
@@ -243,7 +243,7 @@ const Game = ({ players, color, audio, theme }) => {
     switch (state.winner) {
       case "player1pieces":
         setIsActive(false);
-        saveResult(state, { minutes: time.minute, seconds: time.second });
+        if (players) saveResult(state, { minutes: time.minute, seconds: time.second });
         localStorage.setItem(
           "game-state",
           JSON.stringify({
@@ -268,15 +268,15 @@ const Game = ({ players, color, audio, theme }) => {
         gameStatus = (
           <div>
             <span>Black won!</span>
-            <span class="minute">{time.minute}</span>
+            <span className="minute">{time.minute}</span>
             <span>:</span>
-            <span class="second">{time.second}</span>
+            <span className="second">{time.second}</span>
           </div>
         );
         break;
       case "player2pieces":
         setIsActive(false);
-        saveResult(state, { minutes: time.minute, seconds: time.second });
+        if (players) saveResult(state, { minutes: time.minute, seconds: time.second });
         localStorage.setItem(
           "game-state",
           JSON.stringify({
@@ -301,15 +301,15 @@ const Game = ({ players, color, audio, theme }) => {
         gameStatus = (
           <div>
             <span>White won!</span>
-            <span class="minute">{time.minute}</span>
+            <span className="minute">{time.minute}</span>
             <span>:</span>
-            <span class="second">{time.second}</span>
+            <span className="second">{time.second}</span>
           </div>
         );
         break;
       case "player1moves":
         setIsActive(false);
-        saveResult(state, { minutes: time.minute, seconds: time.second });
+        if (players) saveResult(state, { minutes: time.minute, seconds: time.second });
         localStorage.setItem(
           "game-state",
           JSON.stringify({
@@ -334,15 +334,15 @@ const Game = ({ players, color, audio, theme }) => {
         gameStatus = (
           <div>
             <span>No moves left. Black won!</span>
-            <span class="minute">{time.minute}</span>
+            <span className="minute">{time.minute}</span>
             <span>:</span>
-            <span class="second">{time.second}</span>
+            <span className="second">{time.second}</span>
           </div>
         );
         break;
       case "player2moves":
         setIsActive(false);
-        saveResult(state, { minutes: time.minute, seconds: time.second });
+        if (players) saveResult(state, { minutes: time.minute, seconds: time.second });
         localStorage.setItem(
           "game-state",
           JSON.stringify({
@@ -367,9 +367,9 @@ const Game = ({ players, color, audio, theme }) => {
         gameStatus = (
           <div>
             <span>No moves left. White won!</span>
-            <span class="minute">{time.minute}</span>
+            <span className="minute">{time.minute}</span>
             <span>:</span>
-            <span class="second">{time.second}</span>
+            <span className="second">{time.second}</span>
           </div>
         );
         break;
@@ -377,13 +377,16 @@ const Game = ({ players, color, audio, theme }) => {
         gameStatus = (
           <div>
             <span>
+              {players === 0
+                ? "AI vs AI "
+                : players === 1 ? "Singleplayer " : "Multiplayer "}
               {currentState.currentPlayer === true
                 ? "Black's turn. "
                 : "White's turn. "}
             </span>
-            <span class="minute">{time.minute}</span>
+            <span className="minute">{time.minute}</span>
             <span>:</span>
-            <span class="second">{time.second}</span>
+            <span className="second">{time.second}</span>
           </div>
         );
         break;
@@ -472,7 +475,9 @@ const Game = ({ players, color, audio, theme }) => {
     if (players > 1) {
       return;
     }
-
+    if (state.winner !== null) {
+      return;
+    }
     setTimeout(() => {
       const curHistory = curState.history.slice(0, curState.stepNumber + 1);
 
@@ -483,10 +488,10 @@ const Game = ({ players, color, audio, theme }) => {
       let moveTo;
 
       if (piece === null) {
-        computerMove = Computer.getSmartMove(
+        computerMove = Computer.getMove(
           curState,
           boardState,
-          players === 0 ? "player2" : color === "Black" ? "player2" : "player1"
+          players === 0 ? ((curState.history[curState.history.length - 1]).currentPlayer ? "player1" : "player2") : color === "Black" ? "player2" : "player1"
         );
 
         coordinates = computerMove.piece;
@@ -528,13 +533,17 @@ const Game = ({ players, color, audio, theme }) => {
             }
             audio.play();
             updateStatePostMove(postMoveState).then((result) => {
-              if (players) {
+              if (postMoveState.winner !== null) {
+                return;
+              }
+              if (!players) {
+                computerTurn(postMoveState.activePiece, result,);
               }
               if (postMoveState.currentPlayer === false && color === "Black") {
                 computerTurn(postMoveState.activePiece, result);
               }
             });
-          }, 500);
+          }, 1500);
         }
       );
     }, 1000);
@@ -579,7 +588,7 @@ const Game = ({ players, color, audio, theme }) => {
       stepNumber: 0,
       winner: null,
     });
-    setTime(localStorage.getItem({ second: "00", minute: "00", counter: 0 }));
+    setTime({ second: "00", minute: "00", counter: 0 });
     localStorage.setItem(
       "game-state",
       JSON.stringify({
@@ -650,6 +659,16 @@ const Game = ({ players, color, audio, theme }) => {
             Restart
         </button>
         </div>
+      </div>
+      <div className="win" style={{ display: state?.winner ? 'block' : 'none' }}>
+        <div class="win-content">
+          <p>  {state?.winner == 'player1pieces' ? "Black won! " :
+            state?.winner == 'player2pieces' ? "White won! " :
+              state?.winner == 'player1moves' ? "No moves left. Black won! " :
+                state?.winner == 'player2moves' ? "No moves left. White won! " : ""
+          } Congratulations! </p>
+        </div>
+
       </div>
     </div>
   );
