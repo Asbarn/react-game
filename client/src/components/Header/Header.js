@@ -10,15 +10,15 @@ const Header = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <Menu outerContainerId={"outer-container"} pageWrapId={"page-wrap"} >
-          <a className="menu-item" href="/menu">
-            Menu
-      </a>
-          <a className="menu-item" href="/settings">
+          <NavLink className="menu-item" to="/menu">
+            <div>Menu</div>
+          </NavLink>
+          <NavLink className="menu-item" href="/settings">
             Settings
-      </a>
-          <a className="menu-item" href="/statistics">
-          Statistics
-      </a>
+          </NavLink>
+          <NavLink className="menu-item" href="/statistics">
+            Statistics
+          </NavLink>
         </Menu>
         <h1>Checkers</h1>
       </div>
